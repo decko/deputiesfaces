@@ -6,7 +6,9 @@
 from scrapy.item import Item, Field
 
 class DeputiesItem(Item):
+    id_dep = Field()
     nome = Field()
-    img = Field()
     url = Field()
     email = Field()
+    image_urls = Field()
+    images = Field()

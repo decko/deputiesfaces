@@ -15,10 +15,12 @@ class DeputiesSpider(BaseSpider):
     	deputies = hxs.select('//table[@class="cor"]//td')
     	items = []
     	for deputy in deputies:
-    		item = DeputiesItem()
-    		item['nome'] = deputy.select('.//b/text()').extract()[0].str()
-    		item['img'] = deputy.select('.//img/@src').extract()
-    		item['url'] = 'http://camara.gov.br/internet/deputado/' + deputy.select('.//a/@href').extract()[0]
-    		item['email'] = deputy.select('.//a[contains(@href, "mailto")]/@href').extract()
-    		items.append(item)
+    		if deputy.select('.//img/@src').extract():
+    			item = DeputiesItem()
+    			item['id_dep'] = deputy.select('./a/@href').re(r'\d+')[0]
+    			item['nome'] = deputy.select('.//b/text()').extract()[0]
+    			item['image_urls'] = deputy.select('.//img/@src').extract()
+    			item['url'] = 'http://camara.gov.br/internet/deputado/' + deputy.select('./a/@href').extract()[0]
+    			item['email'] = deputy.select('./a[contains(@href, "mailto")]/@href').extract()
+    			items.append(item)
         return items
